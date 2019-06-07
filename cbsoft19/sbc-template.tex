@@ -96,7 +96,7 @@
     \section{Architecture}
     \label{sec:architecture}
     
-    In this section, we describe the architecture of our tool that consists on two modules: (i)an Eclipse plug-in that uses an interface based on a perspective view composed of the Eclipse infrastructure using \textit{Java Development Tools} (JDT) library; and (ii) an API with the following components: Code Extractor, Code Identifier, Code Recommender, and a Recommender Database. An overview of the Code2Vec architecture is represented in Figure Figure~\ref{fig:api}. 
+    In this section, we describe the architecture of our tool that consists on two modules: (i)an Eclipse plug-in that uses an interface based on a perspective view composed of the Eclipse infrastructure using \textit{Java Development Tools} (JDT) library; and (ii) an API with the following components: Code Extractor, Code Identifier, Code Recommender, and a Recommender Database. An overview of the \textit{Code2Vec} architecture is represented in Figure Figure~\ref{fig:api}. 
     
     \begin{figure}[h]
         \centering
@@ -105,11 +105,11 @@
         \label{fig:api}
     \end{figure}
 
-    \textbf{Plugin Interface:} Presents the Graphical User Interface(GUI) integrated with the Eclipse, developed to be easy to understand and use. As developer types in the editor, our plug-in is listening in the background. When the return comes from our API, we show the recommendations as demonstrated in Figure~\ref{fig:recommender} Area B and C.
+    \textbf{Plugin Interface:} This first step presents the Graphical User Interface(GUI) integrated with the Eclipse IDE. When the developer is typing the code in the IDE editor, our plugin is listening in the background. Then,  the plugin sends a \textit{JSON} object containing the developer's full code and the name of the method. Finally, the API process the request and returns the up to three algorithm recommendations, as shown in Figure~\ref{fig:recommender} Area B and C.
     
-    \textbf{Code Identifier:} Contains the implementation of Code2Vec \cite{Alon2018Code2vec} that is responsible for identifying the name of the algorithm that the developer wants to implement.  Using this structure, it is possible to identify a complete algorithm receiving an incomplete snippet or even just the name of the method in some cases. To perform this, we trained a neural network machine learning model with incomplete algorithms collected from some repositories and using the Java Line Remover, which gets a full algorithm code and starts removing some lines from it in a way where it is still compilable. This way, we can get correct pieces of code to train our Code2Vec. In this context, the code identifier receives from the plug-in a \textit{JSON} object containing the developer's full code and the name of the method he is typing. The Identifier finds the method in the object and split it to use in our model of Code2Vec, as output we have the name of the algorithm being developed. 
+    \textbf{Code Identifier:} Contains the trained \textit{Code2Vec} model \cite{Alon2018Code2vec} that is responsible for represents code snippets as a single fixed-length code vector.  With this, is possible to identify a whole algorithm receiving an incomplete snippet or even just the name of the method. To perform this, we use the \textit{Code2Vec} neural model trained with incomplete algorithms using the Java Line Remover obtaining a full algorithm code from selected repositories and removing some lines from it in a way where the code still compilable. This way is possible to collect correct pieces of code to train the \textit{Code2Vec} neural model. Finally, the Code Identifier finds the method in the object and split it to use in our model of Code2Vec, as output we have the name of the algorithm being developed. 
         
-    \textbf{Code Extractor:} The module of our API, where we pick the code snippet and extract the most relevant information from it, which are the return type, number, and type of parameters. It is used in the code received from the user and in the returned codes from our database. 
+    \textbf{Code Extractor:} Consists of a Code2Algo API module, where it picks the code snippet and extract the most relevant information from it such as the return type, number, and type of parameters. It is used in the code received from the user and in the returned codes from our database. 
     
      \textbf{Recommender Database:} A manually selected database composed by algorithms from educational repositories from GitHub, such as \cite{TheAlgotithms} i.e., made by experienced developers.
         
@@ -130,16 +130,16 @@ First, \cite{Bruch2009} improve the system of code completions by learning from 
 
 \cite{Vijayaraghavan2017Bayou} generates code to complete the function that the developer wants to create, it does not use the lines of code that the user is typing, but "draft program" instead, a method with holes and "queries" that are tips you give about the code, what functions it will call, variables to create, etc. 
 
-More recently, \cite{Luan2018Aroma} provided tool that identifies the algorithm using a similar version of Code2Vec \cite{Alon2018Code2vec}, that performs a search on a database, select candidates, cluster and intercept them for a good recommendation. Our tool also uses the Code2Vec aiming to identify the method name based on a snippet. However, we trained our neural network with incomplete codes, since given an incomplete snippet of code, we recommend similar algorithms.
+More recently, \cite{Luan2018Aroma} provided tool that identifies the algorithm using a similar version of \textit{Code2Vec} \cite{Alon2018Code2vec}, that performs a search on a database, select candidates, cluster and intercept them for a good recommendation. Our tool also uses the \textit{Code2Vec} aiming to identify the method name based on a snippet. However, we trained our neural network with incomplete codes, since given an incomplete snippet of code, we recommend similar algorithms.
 
-Such recommenders provided useful assist tools to help developers during software development. However, our tool differs from the previous works by focusing on recommending different types of algorithms to developers. Thus, developers can focus the effort on other tasks to gain productivity than search on how to implement algorithms in external resources correctly. 
+Such SE recommenders systems provided useful recommendations to help developers during software development. However, our tool differs from the previous works by focusing on recommending different types of algorithms to developers. Thus, developers can focus the effort on other tasks to gain productivity than search on how to implement algorithms in external resources correctly. 
 
 %Code2Algo needs only the lines of code that developer is typing and is restricted to algorithms.
 
-\section{Conclusion}
+\section{Concluding Remarks and Future Work}
 \label{sec:conclusion}
 
-This paper presented Code2Algo, a tool to support developers during the implementation of algorithms in language Java. The tool consists mainly of an integrated Eclipse plug-in, that recommends three most similar algorithms based on the incomplete code of developers during the software development. The tool also recommends complete algorithms to developers with only the name of them using our API. Our tool is based on Code2Vec, a neural model for representing snippets of code. As future work, we intend to implement extension points in the API to integrate other tools, add more features,  and improve our neural network model and  Recommender Database with the purpose to identify and recommend more detailed and specific algorithms.
+This paper presented Code2Algo, a tool with the intent of helping developers by decreasing the effort needed during the implementation of algorithms in Java. The tool consists of an integrated Eclipse plugin and an API that recommends three most similar algorithms based on the incomplete code of developers during the software development. Also, it is possible to recommend complete algorithms to developers with only the name of them. Our tool is based on \textit{Code2Vec}, a neural model trained with incomplete code snippets, and Base Recommender, a database composed of algorithms from educational repositories. As future work, we intend to implement extension points in the API to integrate to other developers tools, add more features, improve the neural model and Recommender Database with the purpose to identify and recommend more algorithms.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}
